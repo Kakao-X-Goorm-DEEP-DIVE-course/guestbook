@@ -1,0 +1,19 @@
+<!-- 템플릿의 기본 구조 설정 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Guestbook{% endblock %}</title>
+
+    {% load static %}  <!-- Django의 static 템플릿 태그 로드 -->
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- 정적 파일 경로 -->
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

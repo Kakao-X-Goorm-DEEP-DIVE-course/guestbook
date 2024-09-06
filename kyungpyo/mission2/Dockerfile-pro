@@ -1,0 +1,43 @@
+# Stage1 : 의존성 설치와 static 파일들 설치
+FROM python:3.10-slim AS builder
+
+# MySQL 관련 패키지와 pkg-config 설치
+RUN apt-get update && apt-get install -y \
+    # mysqlclient가 DB와 상호작용하려고
+    default-libmysqlclient-dev \  
+    # mysqlclient 설치에 반드시 필요
+    libmariadb-dev \ 
+    # 컴파일, 빌드에 필요한 기본 개발 도구 패키지
+    # 여기선 pip이 mysqlclient 설치할 때 MySQL의 C API와 상호작용할 수 있도록 라이브러리 파일 컴파일
+    build-essential \  
+	# mysqlclient가 올바른 경로에서 설치된 MySQL 라이브러리를 찾아 사용할 수 있도록함
+    pkg-config  
+
+WORKDIR /build
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# 정적 파일 모으기
+RUN python manage.py collectstatic --noinput
+
+# Stage 2
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# MySQL과 상호작용할 수 있도록 하는 기본 실행 환경
+RUN apt-get update && apt-get install -y libmariadb3
+
+COPY --from=builder /usr/local /usr/local
+COPY --from=builder /build /app
+
+# 바이트 코드 캐시 파일 생성 안되게
+ENV PYTHONDONTWRITEBYTECODE 1 
+# 로그 실시간 출력
+ENV PYTHONUNBUFFERED 1
+
+# Gunicorn : 웹 요청을 Django로 전달하는 인터페이스			
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "mission2.wsgi:application"]

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile-pro
+    command: gunicorn --bind 0.0.0.0:8000 mission2.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.0
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # DB 데이터를 mysql_data 볼륨에 저장 # /var/lib/mysql은 컨테이너 내부 경로 
+
+# 컨테이너가 종료나 삭제되면 모든 데이터가 사라지기 때문에 volume을 생성해서 호스트에 저장         
+volumes:
+  mysql_data:

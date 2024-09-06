@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile-dev
+    command: python manage.py runserver 0.0.0.0:8000  # 개발 서버 실행
+    volumes:
+      - .:/app  # 코드를 마운트하여 실시간 반영
+    ports:
+      - "8000:8000"  # 로컬에서 접속할 수 있도록 포트 매핑
+    depends_on:
+      - db
+    env_file:
+      - .env
+  
+  db:
+    image: mysql:8.0
+    env_file:
+      - .env  # 데이터베이스 관련 환경 변수를 .env 파일로 관리
+    ports:
+      - "3307:3306"  # MySQL 포트 매핑
+    volumes:
+      - mysql_data:/var/lib/mysql  # 데이터베이스 볼륨 저장
+
+volumes:
+  mysql_data:  # MySQL 데이터가 저장될 볼륨
