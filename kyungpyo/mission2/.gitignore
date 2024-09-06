@@ -1,0 +1,6 @@
+.env
+.secrets.json
+.db.sqlite3
+.requirements.txt
+.staticfiles/
+
