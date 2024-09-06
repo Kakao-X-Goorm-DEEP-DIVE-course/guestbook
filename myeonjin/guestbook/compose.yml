@@ -1,0 +1,13 @@
+version: '22'
+services:
+  web:
+    image: django:4.0
+    container_name: django
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    environment:
+      - ALLOWED_HOSTS=guestbook.mygumi.xyz

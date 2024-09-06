@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ㅎㅇ</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>김현진은 대구광역시 달성군 하빈면에서 태어났으며, 현재 뭐시기 어쩌구에 구름 만세</h1>
+        
+        <!-- 방명록 작성 폼 -->
+        <form method="POST" class="guestbook-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">님 이름:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="context">면진한테 할 말:</label>
+                <textarea id="context" name="context" rows="4" required></textarea>
+            </div>
+            <button type="submit">뭐라 하기</button>
+        </form>
+
+        <!-- 방명록 항목 목록 -->
+        <div class="guestbook-entries">
+            <h2>선조들이 남기신 말씀</h2>
+            <ul>
+                {% for entry in entries %}
+                <li>
+                    <strong>{{ entry.name }}</strong>({{ entry.date|date:"Y-m-d H:i:s" }})왈 <br>
+                    {{ entry.context }} <br>
+                    <span class="entry-meta">#{{ entry.pk }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
