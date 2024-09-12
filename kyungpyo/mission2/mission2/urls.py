@@ -25,5 +25,5 @@ urlpatterns = [
 ]
 
 # DEBUG 모드일 때만 정적 파일 서빙 설정
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# if settings.DEBUG:
+     # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+# PRODUCTION
+# DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 # secrets.json 파일 경로
@@ -57,6 +58,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # PRODUCTION : whitenoise
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', # whitenoise
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,6 +68,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# PRODUCTION : whitenoise
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'mission2.urls'
 
@@ -141,7 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/app/staticfiles/' # 컨테이너 내부의 정적 파일 디렉토리# collectstatic 명령어로 모은 정적 파일들이 저장될 디렉토리
+
+# PRODUCTION
+# STATIC_ROOT = '/app/staticfiles/' # 컨테이너 내부의 정적 파일 디렉토리# collectstatic 명령어로 모은 정적 파일들이 저장될 디렉토리
 
 # 정적 파일을 저장할 프로젝트 내 디렉토리 경로 설정
 STATICFILES_DIRS = [
