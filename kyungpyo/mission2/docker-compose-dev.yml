@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile-dev
-    command: python manage.py runserver 0.0.0.0:8000  # 개발 서버 실행
+    command: ["./wait-for-it.sh", "db", "3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - .:/app  # 코드를 마운트하여 실시간 반영
     ports:

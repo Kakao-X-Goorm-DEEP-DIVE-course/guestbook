@@ -5,16 +5,20 @@ FROM python:3.10-slim
 # MySQL 관련 패키지 설치
 RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
+    libmariadb-dev \
+    libmariadb3 \
     build-essential \
-    pkg-config
+    pkg-config \
+    netcat-openbsd  # Netcat OpenBSD 버전 설치
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements-dev.txt
 
 # 애플리케이션 파일 복사
 COPY . .
+
 
 # 환경 변수 설정
 ENV PYTHONDONTWRITEBYTECODE 1
